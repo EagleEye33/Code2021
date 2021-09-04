@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Rename local variable &apos;total&apos; in &apos;chp0.Nametag.main(...)&apos; to &apos;value&apos;&#x0D;&#x0A;- Original project: &apos;1st project 2&apos;&#x0D;&#x0A;- Original element: &apos;chp0.Nametag.main(String[]).total&apos;&#x0D;&#x0A;- Renamed element: &apos;total&apos;&#x0D;&#x0A;- Update references to refactored element" description="Rename local variable &apos;total&apos;" id="org.eclipse.jdt.ui.rename.local.variable" input="/src&lt;chp0{Nametag.java[Nametag~main~\[QString;@total!562!571!566!570!I!0!false" name="value" references="true" stamp="1516935499077" version="1.0"/>
-</session>

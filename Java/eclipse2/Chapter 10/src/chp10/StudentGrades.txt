@@ -1,3 +1,0 @@
-Donald Duck,90,80,90
-Minnie Mouse,90,98,92
-Homer Simpson,60,70,75
