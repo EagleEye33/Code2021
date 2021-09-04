@@ -1,0 +1,11 @@
+package chp0;
+
+public class Greetings {
+
+	public static void main(String[] args) {
+		System.out.println("Greetings! My name is super student.");
+		System.out.println("Goodbye for now.");
+
+	}
+
+}

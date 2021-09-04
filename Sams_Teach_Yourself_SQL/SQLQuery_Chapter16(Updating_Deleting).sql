@@ -1,0 +1,6 @@
+/*Lesson 16. Updating and Deleting Data
+In this lesson, you will learn how to use the UPDATE and DELETE statements to
+enable you to further manipulate your table data.*/UPDATE CustomersSET cust_email = 'kim@thetoystore.com'WHERE cust_id = 1000000005;SELECT * FROM Customers;UPDATE Customers SET cust_contact = 'Sam Roberts',	cust_email = 'sam@toyland.com'WHERE cust_id = 1000000006;UPDATE CustomersSET cust_email = NULLWHERE cust_id = 1000000005;DELETE FROM CustomersWHERE cust_id = 1000000006;/*Faster Deletes
+If you really do want to delete all rows from a table, don’t use DELETE.
+Instead, use the TRUNCATE TABLE statement, which accomplishes the same
+thing but does it much quicker (because data changes are not logged).*/UPDATE CustomersSET cust_state = UPPER(cust_state)WHERE cust_country = 'USA';UPDATE VendorsSET vend_state = UPPER(vend_state)WHERE vend_country = 'USA';  --challenge 1SELECT * FROM CustomersWHERE cust_id = 1337;DELETE FROM CustomersWHERE cust_id = 1337;  --challenge 2		

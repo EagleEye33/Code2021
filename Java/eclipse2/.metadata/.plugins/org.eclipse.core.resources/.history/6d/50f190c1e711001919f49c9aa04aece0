@@ -1,0 +1,41 @@
+
+public class ReverseInteger {
+
+	public int reverse(int x) {
+		int q = 0, w = 0, e = 1, p = 0, a = 0;
+        String line = Integer.toString(x);
+        int[] newGuess = new int[line.length()];
+        
+        for(int i =0; i < line.length(); i++)
+        {
+        	newGuess[i] = line.charAt(i);
+        }
+        
+        if(newGuess[newGuess.length -1] == 0)
+        	q = 1;
+        
+        if(Character.valueOf((char) newGuess[0]) == 45)
+        {
+        	p = 1;	
+        	a = -1;
+        }
+        	
+        for(int j = newGuess.length; j -q >= p; j--)
+        {
+        	e = (10*newGuess.length) / p*10;
+        	w =  w + e * newGuess[newGuess.length -j -q];
+        	e /= 10;
+        }
+        
+        if(a == -1)
+        	w = w * -1;
+        
+		return w;
+    }
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

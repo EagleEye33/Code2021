@@ -1,0 +1,110 @@
+// Assignment #: Arizona State University CSE205 #11
+//         Name: Wyatt Colyn
+//    StudentID: 121-547-4364
+//      Lecture: TTh 4:30 - 5:45 p.m
+//  Description: This is a utility class that provide a static method that
+//				 takes an infix string, checked and determine if parentheses
+//				 are matching, if matching, returns a postfix string.
+
+import java.util.Stack;
+
+public class InfixToPostfixConverter
+{
+	//**********************************************************************
+	//The precedence method determines the precedence between two operators.
+  	//If the first operator is of higher or equal precedence than the second
+  	//operator, it returns true, otherwise it returns false.
+    //***********************************************************************
+   public static boolean precedence(char first, char second)
+   {
+	   int charObj = Character.valueOf(first);
+	   int charObj2 = Character.valueOf(second);
+	   
+	   if(charObj >= charObj2)
+		   return true;
+	   return false;
+
+   }
+
+	//*************************************************************************
+	//The static convertToPostfix method will convert the infixString
+	//into the corresponding postfix string. Check the algorithm on
+	//assignment #11's description page. Mark each case clearly inside the code
+    //*************************************************************************
+   public static String convertToPostfix(String infixString)
+   {
+      //initialize the resulting postfix string
+      String postfixString = "";
+
+      //initialize the stack
+      Stack<Character> stack1 = new Stack<Character>();
+
+     //Obtain the character at index i in the string
+      for (int i=0; i < infixString.length(); i++)
+      {
+         char currentChar = infixString.charAt(i);
+         Character c = Character.valueOf(currentChar);
+      	//Case A:
+         if(c > 64 && c < 91 || c > 96 && c < 123)
+        	 postfixString += currentChar;
+
+      	//Case B:
+         else if(c == 40)
+        	 stack1.push(currentChar);
+
+      	//Case C:
+         else if((c == 43 || c == 42 || c == 47 || c == 45) && stack1.size() == 0)
+        	 stack1.push(currentChar);
+
+        //Case D:
+         else if((c == 40 || c == 43 || c == 42 || c == 47 || c == 45) && stack1.size() != 0)
+        {
+        	 System.out.println(stack1);
+         char p = stack1.peek();
+         Character charObj = Character.valueOf(p);
+  	     Character charObj2 = Character.valueOf(currentChar);
+  	     System.out.println(precedence(charObj, charObj2));
+         if(precedence(charObj, charObj2) == true)
+         {  
+        	 do  
+        	 {
+        	 postfixString += stack1.pop();
+        	 p = stack1.peek();
+        	 }while(precedence(p, currentChar) == true);
+         }
+         else
+        	 stack1.push(currentChar);
+        }
+      	//Case E:
+         else if(c == 41 && stack1.size() != 0)
+        {
+        	char p = stack1.peek();
+        	do
+        	{
+        		postfixString += stack1.pop();
+        		p = stack1.peek();
+        	}while(p != 40);
+        }
+
+      } //end of for loop
+
+
+    	//Case F:
+      if(stack1.size() > 0)
+      {
+      while(stack1.peek() != 40 && stack1.size() > 0)
+      {
+    	  Character charObj = Character.valueOf(stack1.peek());
+    	  //System.out.println(stack1);
+    	  //System.out.println(precedence(stack1.peek(), stack1.peek()));
+    	  postfixString += stack1.pop();
+    	  if(stack1.size() == 0)
+    		  break;
+      }
+      }
+
+      return postfixString;
+
+   }//end of convertToPostfix method
+
+}//end of the InfixToPostfixConverter class
