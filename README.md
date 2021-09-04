@@ -1,2 +1,2 @@
-# Javaland
-Java code examples and projects
+# Projects and Exercises
+Currently Java and Javascript
