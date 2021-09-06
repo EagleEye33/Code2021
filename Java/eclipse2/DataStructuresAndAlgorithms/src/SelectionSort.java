@@ -1,0 +1,36 @@
+import java.util.Arrays;
+public class SelectionSort {
+
+	public static void main(String[] args) {
+		
+		int min;
+		int temp = 0;
+	
+		int[] list = {10, 50, 34, 39, 10, 32, 11,};
+		
+		for(int i=0; i < (list.length-1); i++)
+		{
+			min = i;
+		for(int j = (i+1); j < (list.length); j++)
+		{
+			if (list[j] < list[min])
+			{
+				min = j;
+			}
+		}
+			temp = list[min];
+			list[min] = list[i];
+			list[i] = temp;
+		}
+		
+		
+		
+		
+		System.out.print(Arrays.toString(list));
+		
+
+	}
+		
+	}
+
+

@@ -1,0 +1,426 @@
+	// Assignment #: Arizona State University CSE205 #7
+//  Name: Wyatt Colyn	
+//StudentID: 121-547-4364
+//Lecture: TTh 4:30-5:45
+//Description: The DrawPane class creates a canvas where we can use
+//        mouse key to draw either a Rectangle or a Circle with different
+//        colors. We can also use the the two buttons to erase the last
+//			 drawn shape or clear them all.
+
+//import any classes necessary here
+//----
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
+import javafx.scene.shape.Shape;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Circle;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.geometry.Orientation;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.MouseEvent;
+
+import java.util.ArrayList;
+
+public class DrawPane extends BorderPane
+{
+private Button button1, button2;
+private ComboBox<String> colorCombo;
+private ArrayList<Shape> shapeList;
+private Pane canvas;
+
+VBox vb = new VBox();
+
+boolean isrectangle = true;
+boolean iscircle = true;
+
+RadioButton rbutton1 = new RadioButton("Rectangle");
+RadioButton rbutton2 = new RadioButton("Circle");
+//declare any other necessary instance variables here
+//----
+//Canvas canvas2 = new Canvas();
+//GraphicsContext gc1 = canvas2.getGraphicsContext2D();
+
+GridPane gp2 = new GridPane();
+BorderPane bp = new BorderPane();
+GridPane gp3 = new GridPane();
+GridPane gp4 = new GridPane();
+ToggleGroup group1 = new ToggleGroup();
+
+double x1, y1, x2, y2, x3, y3;
+Paint color = Color.BLACK;
+String colorselection;
+//Constructor
+public DrawPane()
+{
+//Step #1: initialize each instance variable and set up layout
+
+
+
+	button1 = new Button("Undo");
+	button2 = new Button("Erase");
+	button1.setMinWidth(80.0);
+	button2.setMinWidth(80.0);
+	HBox hb = new HBox(20);
+	hb.getChildren().addAll(button1, button2);
+	hb.setSpacing(50);
+	hb.setPadding(new Insets (10, 10, 10, 200));
+
+
+vb.setPadding(new Insets(10, 10, 10, 10));
+vb.setSpacing(130);
+vb.setStyle("-fx-padding: 10;" + 
+        "-fx-border-style: solid inside;" + 
+        "-fx-border-width: 2;" +
+        "-fx-border-insets: 5;" + 
+        "-fx-border-radius: 5;" + 
+        "-fx-border-color: black;");
+gp4.getChildren().add(vb);
+//Create the color comboBox and initial its default color
+//----
+colorCombo = new ComboBox<String>();
+colorCombo.getItems().addAll("Black","Blue","Green","Red","Yellow","Orange","Pink");
+colorCombo.setValue("Black");
+colorCombo.setMinWidth(100);
+
+
+
+
+//Create the two radio buttons and also a ToggleGroup
+//so that the two radio buttons can be selected
+//mutually exclusively. Otherwise they are independent of each other
+//----
+
+
+
+rbutton1.setToggleGroup(group1);
+rbutton1.setMinWidth(80);
+rbutton1.setSelected(true);
+
+rbutton2.setToggleGroup(group1);
+rbutton2.setMinWidth(80);
+
+//initialize shapeList, it is a data structure we used
+//to track the shape we created
+shapeList = new ArrayList<Shape>();
+
+//canvas is a Pane where we will draw rectangles and circles on it
+canvas = new Pane();
+canvas.setStyle("-fx-background-color: beige;");
+canvas.setMinWidth(450);
+canvas.setMinHeight(360);
+gp3.getChildren().add(canvas);
+
+//initialize the remaining instance variables and set up
+//the layout
+gp2.getChildren().add(hb);
+vb.getChildren().addAll(colorCombo, rbutton1, rbutton2);
+bp.setLeft(gp4);
+bp.setBottom(gp2);
+bp.setCenter(gp3);
+this.getChildren().addAll(bp);
+
+//Step #3: Register the source nodes with its handler objects
+canvas.setOnMousePressed(new MouseHandler());
+canvas.setOnMouseDragged(new MouseHandler());
+canvas.setOnMouseReleased(new MouseHandler());
+button1.setOnAction(new ButtonHandler());
+button2.setOnAction(new ButtonHandler());
+rbutton1.setOnAction(new ShapeHandler());
+rbutton2.setOnAction(new ShapeHandler());
+colorCombo.setOnAction(new ColorHandler());
+}
+
+//Step #2(A) - MouseHandler
+private class MouseHandler implements EventHandler<MouseEvent>
+{
+public void handle(MouseEvent event)
+{
+	Rectangle rec1 = new Rectangle(0, 0, 0, 0);
+	Circle circ1 = new Circle(0, 0, 0);
+	rec1.setVisible(false);
+	circ1.setVisible(false);
+	
+	 if(event.getEventType() == MouseEvent.MOUSE_PRESSED)
+	 {
+		 if(isrectangle == true)
+		 {
+		 x1 = event.getX();
+		 y1 = event.getY();
+		 
+         rec1.setVisible(true);
+         canvas.getChildren().add(rec1);
+         rec1.setFill(Color.WHITE);
+         shapeList.add(rec1);
+       
+		 }
+		 else
+		 {	
+		 x1 = event.getX();
+		 y1 = event.getY();
+		 
+         circ1.setVisible(true);
+         canvas.getChildren().add(circ1);
+         circ1.setFill(Color.WHITE);
+         shapeList.add(circ1);
+		}
+	 }
+	 if(event.getEventType() == MouseEvent.MOUSE_DRAGGED)
+	 {
+		 if(shapeList.size() >= 1)
+		 {
+		 Shape s = shapeList.get(shapeList.size()-1);
+	     shapeList.remove(shapeList.size()-1);
+		 canvas.getChildren().remove(s);
+		 }
+		 
+		 x2 = event.getX();
+		 y2 = event.getY();
+		 if(isrectangle == true)
+		 {
+		 double Width = x2 - x1;
+		 double Height = y2 - y1;
+		 //Width = Math.abs(Width);
+		 //Height = Math.abs(Height);
+		 
+		
+		
+		 rec1.setFill(Color.WHITE); 
+		 rec1.setStroke(Color.BLACK);
+		 rec1.setStrokeWidth(1);
+		 
+		 if(Width>0&&Height>0)
+		 {
+		 rec1.setX(x1);
+		 rec1.setY(y1); 
+		 rec1.setWidth(Width);
+		 rec1.setHeight(Height);
+	     }
+		 
+		 if(Width<0 && Height<0)
+		 {
+		 rec1.setX(x2);
+		 rec1.setY(y2);
+		 rec1.setWidth(Math.abs(Width));
+		 rec1.setHeight(Math.abs(Height));
+		 }													////sets appropriate x and y coordinates based off where the user drags the mouse relative to mousepressed
+		 if(Width>0 && Height<0)
+		 {
+		 rec1.setX(x1);
+		 rec1.setY(y2);
+		 rec1.setWidth(Math.abs(Width));
+		 rec1.setHeight(Math.abs(Height));
+		 }
+		 if(Width<0 && Height>0)
+		 {
+		 rec1.setX(x2);
+		 rec1.setY(y1);
+		 rec1.setWidth(Math.abs(Width));
+		 rec1.setHeight(Math.abs(Height));
+		 }
+		 rec1.setVisible(true); 
+		 canvas.getChildren().add(rec1);
+		 shapeList.add(rec1);
+		 }
+		 
+		 else{
+			 
+		double a = x2-x1;
+		double b = y2 - y1;
+		double radius = Math.sqrt(Math.pow(a,2)+Math.pow(b,2));
+		circ1.setCenterX(x1);
+	    circ1.setCenterY(y1);
+	    circ1.setRadius(radius);
+		circ1.setFill(Color.WHITE);
+		circ1.setStroke(Color.BLACK);
+		circ1.setStrokeWidth(1);
+		circ1.setVisible(true); 
+		canvas.getChildren().add(circ1);
+		shapeList.add(circ1);
+		 }
+		}
+	
+
+	 if(event.getEventType() == MouseEvent.MOUSE_RELEASED)
+	 {
+		 x3 = event.getX();
+		 y3 = event.getY();
+		 if(x3 == x1 || y3 ==y1)
+         {
+			 Shape s = shapeList.get(shapeList.size()-1);
+		     shapeList.remove(shapeList.size()-1);
+			 canvas.getChildren().remove(s);
+         }
+		 if(shapeList.size() >= 1)
+		 {
+		 Shape s = shapeList.get(shapeList.size()-1);
+	     shapeList.remove(shapeList.size()-1);
+		 canvas.getChildren().remove(s);
+		 }
+		 
+		 
+		 if(x3 > 450 || y3 > 360 || x3 < 0 || y3 < 0)
+		 {
+		 
+		 }
+		 else
+		 {
+		 if(isrectangle == true)
+		 {
+		 double Width = x3 - x1;
+		 double Height = y3 - y1;
+		 if(Width>0&&Height>0)
+		 {
+		 rec1.setX(x1);
+		 rec1.setY(y1); 
+		 rec1.setWidth(Width);
+		 rec1.setHeight(Height);
+	     }
+		 
+		 if(Width<0 && Height<0)
+		 {
+		 rec1.setX(x2);
+		 rec1.setY(y2);
+		 rec1.setWidth(Math.abs(Width));
+		 rec1.setHeight(Math.abs(Height));
+		 }
+		 if(Width>0 && Height<0)
+		 {																	//sets appropriate x and y coordinates based off where the user releases the mouse relative to mousepressed
+		 rec1.setX(x1);
+		 rec1.setY(y2);
+		 rec1.setWidth(Math.abs(Width));
+		 rec1.setHeight(Math.abs(Height));
+		 }
+		 if(Width<0 && Height>0)
+		 {
+		 rec1.setX(x2);
+		 rec1.setY(y1);
+		 rec1.setWidth(Math.abs(Width));
+		 rec1.setHeight(Math.abs(Height));
+		 }
+		 
+		 rec1.setFill(color);
+		 rec1.setVisible(true); 
+		 canvas.getChildren().add(rec1);
+		  shapeList.add(rec1);
+		 }
+		 else
+		 {
+		double a = x3-x1;
+		double b = y3 - y1;
+		 double radius = Math.sqrt(Math.pow(a,2)+Math.pow(b,2));		//calculates the circles radius based off the location of the mouse release
+		 circ1.setCenterX(x1);
+		 circ1.setCenterY(y1);
+		 if(radius*2 > 360 )
+		 {
+			 
+		 }
+		 else
+		 {
+		 circ1.setRadius(radius);
+		 
+		 circ1.setFill(color);
+		 circ1.setVisible(true); 
+		 canvas.getChildren().add(circ1);
+		 shapeList.add(circ1);
+		 }
+		 }
+	 }
+	 }
+	 
+	 //handle MouseEvent here
+	 //Note: you can use if(event.getEventType()== MouseEvent.MOUSE_PRESSED)
+	 //to check whether the mouse key is pressed, dragged or released
+	 //write your own codes here
+	 //----
+
+
+}//end handle()
+}//end MouseHandler
+
+//Step #2(B)- A handler class used to handle events from Undo & Erase buttons
+private class ButtonHandler implements EventHandler<ActionEvent>
+{
+public void handle(ActionEvent event)
+{
+	  if(event.getSource() == button1) //undo button
+	  {
+		  if(shapeList.size() >= 1)
+		  {
+		  Shape s = shapeList.get(shapeList.size()-1);
+		  shapeList.remove(shapeList.size()-1);
+		  canvas.getChildren().remove(s);									//removes previous shape data from the shapeList and canvas
+		  }
+	  }
+	  if(event.getSource() == button2) //erase button
+	  {
+		   while(shapeList.size() != 0)                                                
+		  {
+		Shape s = shapeList.get(shapeList.size()-1);						//removes all shape data from the shapeList and canvass
+		shapeList.remove(shapeList.size()-1);
+		 canvas.getChildren().remove(s);
+		  }
+	  }
+
+}
+}//end ButtonHandler
+
+//Step #2(C)- A handler class used to handle events from the two radio buttons
+private class ShapeHandler implements EventHandler<ActionEvent>
+{
+public void handle(ActionEvent event)
+{
+	  if(rbutton1.isSelected())
+	  {
+		  isrectangle = true;
+	  }
+	  else														//determines if a circle or a rectangle is to be drawn 
+	  {
+		  isrectangle = false;
+	  }
+
+
+}
+}//end ShapeHandler
+
+//Step #2(D)- A handler class used to handle colors from the combo box
+private class ColorHandler implements EventHandler<ActionEvent>
+{
+public void handle(ActionEvent event)
+{
+	colorselection = colorCombo.getValue();
+	if(colorselection == "Black")
+		color = Color.BLACK;
+	if(colorselection == "Blue")
+		color = Color.BLUE;
+	if(colorselection == "Green")				//sets the Color variable to the selected color
+		color = Color.GREEN;
+	if(colorselection == "Red")
+		color = Color.RED;
+	if(colorselection == "Yellow")
+		color = Color.YELLOW;
+	if(colorselection == "Orange")
+		color = Color.ORANGE;
+	if(colorselection == "Pink")
+		color = Color.PINK;
+
+}
+}//end ColorHandler
+
+}//end class DrawPane
+

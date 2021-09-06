@@ -1,0 +1,20 @@
+
+public class Multiplesof3and5 {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		int sum = 0; 
+		int sum2 = 0;
+		
+		for (int value = 3; value < 1000; value += 3) {
+		sum += value;
+		}
+		for (int value2 = 5; value2 < 1000; value2 += 5) {
+		sum2 = sum += value2;
+		}
+			
+System.out.println(sum);
+	}
+}
+
+

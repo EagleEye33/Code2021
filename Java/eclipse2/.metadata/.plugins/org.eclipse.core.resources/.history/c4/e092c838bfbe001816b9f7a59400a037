@@ -1,0 +1,110 @@
+// Assignment #: Arizona State University CSE205 #6
+//         Name: Wyatt Colyn
+//    StudentID: 121-547-4364
+//      Lecture: TTh 4:30pm
+//  Description: InputPane generates a pane where a user can enter
+//  a laptop information and create a list of available laptops.
+
+import java.util.ArrayList;
+
+import javafx.event.EventHandler;
+import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
+//import all other necessary javafx classes here
+//----
+
+public class InputPane extends HBox
+{
+	//GUI components
+   private ArrayList<Laptop> laptopList;
+
+   //The relationship between InputPane and PurchasePane is Aggregation
+   private PurchasePane purchasePane;
+   //----
+
+	//constructor
+	public InputPane(ArrayList<Laptop> list, PurchasePane pPane)
+	{
+		this.laptopList = list;
+		this.purchasePane = pPane;
+
+		//Step #1: initialize each instance variable and set up the layout
+		//----
+		laptopList = null;
+		purchasePane = null;
+		//create a GridPane hold those labels & text fields
+		//consider using .setPadding() or setHgap(), setVgap()
+		//to control the spacing and gap, etc.
+		//----
+		GridPane pane = new GridPane();
+		pane.setMinSize(200,200);
+		Label label1 = new Label("Brand");
+		label1.setFont(new Font("Arial",30));
+		Label label2 = new Label("Model");
+	    Label label3 = new Label("CPU(GHz)");
+		Label label4 = new Label("RAM(GB)");
+	    Label label5 = new Label("Price($)");
+		
+
+		//You might need to create a sub pane to hold the button
+   		//----
+
+   		//Set up the layout for the left half of the InputPane.
+   		//----
+
+
+   		//the right half of the InputPane is simply a TextArea object
+   		//Note: a ScrollPane will be added to it automatically when there are no
+   		//enough space
+
+   		//Add the left half and right half to the InputPane
+		pane.addRow(1, label1);
+		pane.addRow(2, label2);
+		pane.addRow(3, label3);
+	    pane.addRow(4, label4);
+		pane.addRow(5, label5);
+   		//Note: InputPane extends from HBox
+   		//----
+
+ 	  //Step #3: register source object with event handler
+ 	  //----
+
+
+	} //end of constructor
+
+  //Step #2: Create a ButtonHandler class
+  //ButtonHandler listens to see if the buttont "Enter a Laptop Info." is pushed or not,
+  //When the event occurs, it get a laptop's brand, model, CPU, RAM and price
+  //information from the relevant text fields, then create a new Laptop object and add it inside
+  //the laptopList. Meanwhile it will display the laptop's information inside the text area.
+  //It also does error checking in case any of the textfields are empty or wrong data was entered.
+    private class ButtonHandler implements EventHandler<ActionEvent>
+   	 {
+   	    //Override the abstact method handle()
+   	    public void handle(ActionEvent e)
+        {
+			//declare any necessary local variables here
+			//---
+
+			//when a text field is empty and the button is pushed
+			if ( //----  )
+			{
+				//handle the case here
+
+			}
+			else	//for all other cases
+         	{
+				//----
+				//at the end, don't forget to update the new arrayList
+				//information on the ListView of the Purchase Pane
+                //----
+
+                //Also somewhere you will need to use try & catch block to catch
+                //the NumberFormatException
+            }
+      } //end of handle() method
+   } //end of ButtonHandler class
+
+}

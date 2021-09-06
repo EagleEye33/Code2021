@@ -1,0 +1,16 @@
+public class countdigits {
+	
+	public static void main(String[] args){
+		int n = 153;
+		int sum = 0;
+		int digit = 0;
+		
+		while(n != 153)
+		{
+			digit  = n % 10;
+			sum = sum + digit; 
+		}
+		
+	System.out.println("the sum is " + sum);
+	}
+}
