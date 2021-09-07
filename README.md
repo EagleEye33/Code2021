@@ -1,2 +1,2 @@
 # Projects and Exercises
-Currently Java and Javascript
+Currently Java, Javascript, Python, SQL, and C
